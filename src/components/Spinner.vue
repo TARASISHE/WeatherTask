@@ -7,9 +7,9 @@
 .spinner {
   animation: rotate 2s linear infinite;
   z-index: 2;
-  position: absolute;
-  top: 36%;
-  left: 50%;
+  position: relative;
+  top: -28px;
+  left: 88%;
   margin: -25px 0 0 -25px;
   width: 50px;
   height: 50px;
@@ -22,12 +22,7 @@
     animation: dash 1.5s ease-in-out infinite;
 }
 
-@media  screen and (max-width: 470px){
-  .spinner {
-  top: 50%;
-  margin: 0 0 0 -25px;
-}
-}
+
 
 
 @keyframes rotate {

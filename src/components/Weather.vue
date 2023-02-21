@@ -58,14 +58,14 @@
     name="list" 
     tag="div">  
     <div  
-        v-for="oneCity in sortedWeatherItemList" 
+        v-for="(oneCity,index) in sortedWeatherItemList" 
         :key="oneCity.id" 
         class=" mx-3  flex text-base">
             <div 
             class=" relative flex flex-row items-center justify-center w-52 h-16 border-b-2 border-l-2 border-black text-base md:w-36 sm:w-36 xs:w-24">
                 {{ oneCity.city }} 
                 <img 
-                @click="deleteCityFromTable(index)" 
+                @click="deleteCityFromTable(oneCity)" 
                 class="absolute top-2 left-2 w-3 h-3" 
                 src="../assets/img/delete.png" alt="">
             </div>
@@ -103,7 +103,11 @@ const searchCityPanel = ref(false)
 
 const findCity = async () =>{
  try{
-    spinner.value= true
+   if(query.value === ''){
+    spinner.value = false
+   } else {
+    spinner.value =true
+   }
     searchCityPanel.value = true
     const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${query.value}`);
     const data = await response.json();
@@ -124,22 +128,22 @@ const longitude = ref(0)
 
 const appendCity = (city)=> {
   searchCityPanel.value = true
-  if(query.value === '' && sortedWeatherItemList.length > 0){
-    spinner.value= false
-  }
+
 
   query.value = city;
   weatherItemList.value.push({
+     id: city.id,
      city: city.name,
      min:[],
      max:[]
   })
 
+
   latitude.value = city.latitude;
   longitude.value = city.latitude;
   fetchWeather() 
 
-  spinner.value= false
+  spinner.value = false
   searchCityPanel.value = false
   query.value = '';
   localStorage.setItem('weatherItemList.value', JSON.stringify(weatherItemList.value))
@@ -163,6 +167,8 @@ const fetchWeather = async () =>{
     weatherItemList.value[weatherItemList.value.length - 1].max = weather.value.daily.temperature_2m_max
     localStorage.setItem('weatherItemList', JSON.stringify(weatherItemList.value))
 
+
+    console.log(weatherItemList.value)
   }catch(err){
     console.log(err)
   }
@@ -170,8 +176,9 @@ const fetchWeather = async () =>{
 // end fetch weather and get day 
 
 // start delete the item from table
-const deleteCityFromTable = (index)=>{
-    weatherItemList.value.splice(index,1)
+const deleteCityFromTable = (ind ) => {
+    let index = weatherItemList.value.findIndex((el) => el === ind)
+    weatherItemList.value.splice(index , 1)
     localStorage.setItem('weatherItemList', JSON.stringify(weatherItemList.value))
 }
 // end delete the item from table
@@ -257,5 +264,14 @@ onMounted(()=>{
 
 .list-leave-active {
   position: absolute;
+}
+
+@media  screen and (max-width: 470px){
+  .spinner {
+  position: relative;
+  top: -55px;
+  left: 88%;
+  margin: 0 0 0 -25px;
+}
 }
 </style>

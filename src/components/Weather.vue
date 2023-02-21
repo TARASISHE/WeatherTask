@@ -39,17 +39,17 @@
     <div v-if="sortedWeatherItemList.length" 
          class="flex mx-3 mt-6">
         <div 
-        @click="sortParam = 'city'" 
+        @click="sortBy('city')" 
         class="p-2 flex items-center justify-center w-52 h-16 border-y-2 border-l-2 border-black font-semibold md:w-36 sm:w-36 xs:w-24">
               City
         </div>
         <div 
-        @click="sortParam='min'" 
+        @click="sortBy('min')" 
         class="p-2 flex items-center justify-center w-52  h-16 border-2 border-black  font-semibold md:w-36 sm:w-36 xs:w-24">
         MinTemp
         </div>
         <div 
-        @click="sortParam='max'" 
+        @click="sortBy('max')" 
         class="p-2 flex items-center justify-center w-52  h-16 border-y-2 border-r-2 border-black font-semibold md:w-36 sm:w-36 xs:w-24">
         MaxTemp
         </div>
@@ -178,29 +178,26 @@ const deleteCityFromTable = (index)=>{
 
 
 // start sort the table
-const sortParam = ref('')
-
+const sortedColumn = ref('city')
+const sortAsc = ref(1)
 
 const sortedWeatherItemList = computed(()=>{
-    switch(sortParam.value){
-        case 'city': return weatherItemList.value.sort(sortByCityName );
-        case 'min': return weatherItemList.value.sort(sortByMinTemp);
-        case 'max': return weatherItemList.value.sort(sortByMaxTemp);
-        default: return weatherItemList.value;
-    }
+     return weatherItemList.value.sort((a,b)=>{
+        if (a[sortedColumn.value] > b[sortedColumn.value]) return 1 * sortAsc.value;
+        if (a[sortedColumn.value] < b[sortedColumn.value]) return -1 * sortAsc.value;
+     })
+      
 })
 
-const sortByCityName = (a, b) => {
-    return (a.city.toLowerCase() > b.city.toLowerCase()) ? 1 : -1;
-};
-const sortByMinTemp =  (a, b) =>{ 
-    return (a.min > b.min) ? 1 : -1; 
-};
-
-const sortByMaxTemp = (a, b) =>{ 
-    return (a.max > b.max) ? -1 : 1; 
-};
-
+const sortBy = (arg) =>{
+    sortedColumn.value = arg
+    if(sortedColumn.value === arg){
+      sortAsc.value *= -1
+    } else{
+      sortAsc.value = 1
+      sortedColumn.value = arg
+    }
+}
 
 //end sort the table
 

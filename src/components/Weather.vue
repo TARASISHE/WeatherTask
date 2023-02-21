@@ -163,11 +163,12 @@ const fetchWeather = async () =>{
     days.value = weather.value.daily.time
     localStorage.setItem('days', JSON.stringify(days.value))
 
+
     weatherItemList.value[weatherItemList.value.length - 1].min = weather.value.daily.temperature_2m_min
     weatherItemList.value[weatherItemList.value.length - 1].max = weather.value.daily.temperature_2m_max
     localStorage.setItem('weatherItemList', JSON.stringify(weatherItemList.value))
 
-    console.log(weatherItemList.value)
+
   }catch(err){
     console.log(err)
   }

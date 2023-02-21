@@ -58,7 +58,7 @@
     name="list" 
     tag="div">  
     <div  
-        v-for="(oneCity,index) in sortedWeatherItemList" 
+        v-for="oneCity in sortedWeatherItemList" 
         :key="oneCity.id" 
         class=" mx-3  flex text-base">
             <div 
@@ -146,7 +146,7 @@ const appendCity = (city)=> {
   spinner.value = false
   searchCityPanel.value = false
   query.value = '';
-  localStorage.setItem('weatherItemList.value', JSON.stringify(weatherItemList.value))
+  localStorage.setItem('weatherItemList', JSON.stringify(weatherItemList.value))
 }
 // end append city in table
 
@@ -166,7 +166,6 @@ const fetchWeather = async () =>{
     weatherItemList.value[weatherItemList.value.length - 1].min = weather.value.daily.temperature_2m_min
     weatherItemList.value[weatherItemList.value.length - 1].max = weather.value.daily.temperature_2m_max
     localStorage.setItem('weatherItemList', JSON.stringify(weatherItemList.value))
-
 
     console.log(weatherItemList.value)
   }catch(err){

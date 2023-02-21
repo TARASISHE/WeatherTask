@@ -8,10 +8,10 @@
     placeholder="Search..."
     v-model="query"
     @input="findCity()">
-    <ul class="absolute top-[60px] left-5 z-10 w-1/3 border border-[#B2B1CF] " 
+    <ul class="absolute top-[60px] left-5 z-10 w-1/3 border border-[#B2B1CF] xs:w-1/2 " 
         v-if="searchCityPanel">
             <li
-              class="p-2 text-semibold text-lg cursor-pointer hover:bg-[#98D2EB]"
+              class="p-3 text-semibold text-lg cursor-pointer hover:bg-[#98D2EB]"
               v-for="city in cities" 
               :key="city.id" 
               @click="appendCity(city)"
